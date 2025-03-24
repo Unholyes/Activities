@@ -1,0 +1,127 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node {
+ struct Node* next;
+ int data;
+} Node;
+
+typedef struct {
+ Node* front;
+ Node* rear;
+} Queue;
+
+Node* createNode(int data);
+Queue* createQueue();
+void enqueue(Queue* queue, int data);
+int dequeue(Queue* queue);
+int front(Queue* queue);
+int isEmpty(Queue* queue);
+void printQueue(Queue* queue);
+
+int main(void) {
+
+ Queue* queue = createQueue();
+
+ int selection, data;
+ int nodeToInsert;
+
+ do {
+  printf("\nPlease select an operation:");
+  printf("\n[1] Print Queue");
+  printf("\n[2] Enqueue");
+  printf("\n[3] Dequeue");
+  printf("\n[4] View Front");
+  printf("\n[5] Exit Program\n");
+
+  printf("\nEnter seletion: ");
+  scanf("%d", &selection);
+  switch(selection) {
+   case 1:
+    if(isEmpty(queue)) {
+     printf("\nQueue is currently empty.\n");
+    } else {
+     printQueue(queue);
+    }
+    break;
+   case 2:
+    printf("\nEnter value of node: ");
+    scanf("%d", &data);
+    enqueue(queue, data);
+    break;
+   case 3:
+    if(isEmpty(queue)) {
+     printf("\nAborted operation. Queue is currently empty.\n");
+    } else {
+     printf("\nSuccessfully deleted node with the value of: %d\n", dequeue(queue));
+    }
+    break;
+   case 4:
+    if(isEmpty(queue)) {
+     printf("\nAborted operation. Queue is currently empty.\n");
+    } else {
+     printf("\nValue at the front of the Queue: %d\n", front(queue));
+    }
+    break;
+   case 5:
+    printf("\nByers!");
+    break;
+  }
+ }while(selection != 5);
+
+
+ return 0;
+}
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = newNode;
+    return newNode;
+}
+
+Queue* createQueue() {
+    Queue* queue = (Queue*) malloc (sizeof(Queue));
+    queue->front = queue->rear = NULL;
+    return queue;
+}
+
+void enqueue(Queue* queue, int data) {
+    Node* newNode = createNode(data);
+    if (isEmpty(queue)) {
+        queue->front = queue->rear = newNode;
+    } else {
+        queue->rear->next = newNode;
+        queue->rear = queue->front;
+    }
+}
+
+int dequeue(Queue* queue) {
+    int data = queue->front->data;
+    Node* temp = queue->front;
+    queue->front = queue->front->next;
+    if (queue->front == NULL)
+        queue->rear = NULL;
+    free(temp);
+    return data;
+}
+
+int front(Queue* queue) {
+ return queue->front->data;
+}
+
+int isEmpty(Queue* queue) {
+ return queue->front == NULL;
+         
+}
+
+void printQueue(Queue* queue) {
+ Node* i = queue->front;
+ printf("\n\nValues in Queue: [ ");
+
+ while(i != NULL) {
+  printf("%d ", i->data);
+  i = i->next;
+ }
+ printf("]\n");
+}
