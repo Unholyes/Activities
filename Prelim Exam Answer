@@ -1,0 +1,134 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct variable {
+ char name;
+ double value;
+} var;
+
+int displayMenu(int* choice);
+void displayStoredValues(var* vars, int size);
+void storeValue(var* vars, int* size, double value);
+double basicOperation();
+long factorialOperation();
+long factorial(int n);
+
+int main(void) {
+ 
+ var* vars = (var*) malloc(sizeof(var));
+ int choice, size = 0;
+ 
+ printf("Scientific-ish Calculator\n");
+ do {
+  switch(displayMenu(&choice)) {
+   case 1:
+    storeValue(vars, &size, basicOperation());
+    break;
+   case 2:
+    storeValue(vars, &size, factorialOperation());
+    break;
+   case 3:
+    displayStoredValues(vars, size);
+    break;
+   case 4:
+    printf("\nGoodbye! Till next time...");
+    break;
+  }
+ } while(choice != 4);
+ 
+
+ return 0;
+}
+
+
+int displayMenu(int* choice) {
+ 
+ printf("\n===========================");
+ printf("\nSelect a Function");
+ printf("\n===========================");
+ printf("\n[1] Basic Operation");
+ printf("\n[2] Factorial Operation");
+ printf("\n[3] Display Stored Values");
+ printf("\n[4] Shutdown Calculator");
+ printf("\n===========================\n");
+ printf("\nEnter Choice: ");
+ scanf("%d", choice);
+ 
+ return *choice;
+}
+
+void displayStoredValues(var* vars, int size) {
+ printf("\n============================");
+ printf("\nStored Values");
+ printf("\n============================");
+ printf("\nName\tValue\n");
+ int i;
+ for(i =0; i<size; i++) {
+  printf("%c\t%.2lf\n", vars[i].name, (vars+i)->value);
+ }
+ printf("\n============================\n");
+}
+
+void storeValue(var* vars, int* size, double value) {
+ char choice;
+ 
+ printf("\nStore value after operation? (y/n): ");
+ scanf(" %c", &choice);
+ 
+ if(choice == 'y') {
+  printf("\nEnter name of variable: ");
+  scanf(" %c", &vars[*size].name);
+  vars[*size].value = value;
+  vars = (var*) realloc(vars, ((++*size)+1)*sizeof(var));
+ }
+}
+
+double basicOperation() {
+ char operand;
+ double x, y;
+ double result = 0;
+ 
+ printf("\nEnter the first value: ");
+ scanf("%lf", &x);
+ printf("Enter the operand [+,-,*,/]: ");
+ scanf(" %c", &operand);
+ printf("Enter the second value: ");
+ scanf("%lf", &y);
+ 
+ switch(operand) {
+  case '+':
+   result = x+y;
+   break;
+  case '-':
+   result = x-y;
+   break;
+  case '*':
+   result = x*y;
+   break;
+  case '/':
+   result = x/y;
+   break;
+ }
+ 
+ printf("\nResult: %.2lf", result);
+ return result;
+}
+
+long factorialOperation() {
+ int n;
+ long result;
+ printf("\nEnter a number: ");
+ scanf("%d", &n);
+ 
+ result = factorial(n);
+ 
+ printf("\nResult: %ld", result);
+ return result;
+}
+
+long factorial(int n) {
+    if (n == 0 || n == 1)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
