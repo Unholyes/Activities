@@ -1,0 +1,45 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Student {
+    char name[99];
+    long int rollNo;
+    double math, science, english;
+} student;
+
+int main(void) {
+    
+    int size;
+    
+    printf("Enter the number of students: ");
+    scanf("%d", &size);
+    
+    student* students = (student*) malloc(size*sizeof(student));
+    
+    for(int i=0; i<size; i++){
+        printf("\nEnter details for student %d:", i+1);
+        printf("\nName: ");
+        scanf("%s", (students+i)->name);
+        printf("Roll Number: ");
+        scanf("%ld", &(students+i)->rollNo);
+        printf("Math Marks: ");
+        scanf("%lf", &(students+i)->math);
+        printf("Science Marks: ");
+        scanf("%lf", &(students+i)->science);
+        printf("English Marks: ");
+        scanf("%lf", &(students+i)->english);
+    }
+    
+    printf("\nStudent Details:");
+    
+    for(int i=0; i<size; i++){
+        printf("\n\nStudent %d:", i+1);
+        printf("\nName: %s", (students+i)->name);
+        printf("\nRoll Number: %ld", (students+i)->rollNo);
+        printf("\nMath Marks: %.2lf", (students+i)->math);
+        printf("\nScience Marks: %.2lf", (students+i)->science);
+        printf("\nEnglish Marks: %.2lf", (students+i)->english);
+    }
+    
+    return 0;
+}
