@@ -1,0 +1,109 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct {
+    int* arr;
+    int size;
+} Stack;
+
+Stack* createStack();
+void push(Stack* stack, int data);
+int pop(Stack* stack);
+int peek(Stack* stack);
+int isEmpty(Stack* stack);
+void printStack(Stack* stack);
+
+int main(void) {
+ 
+ Stack* stack = createStack();
+ 
+ int selection, data;
+ int nodeToInsert;
+ 
+ do {
+  printf("\nPlease select an operation:");
+  printf("\n[1] Print Stack");
+  printf("\n[2] Push");
+  printf("\n[3] Pop");
+  printf("\n[4] Peek");
+  printf("\n[5] Exit Program\n");
+  
+  printf("\nEnter seletion: ");
+  scanf("%d", &selection);
+  switch(selection) {
+   case 1: 
+    if(isEmpty(stack)) {
+     printf("\nStack is currently empty.\n");
+    } else {
+     printStack(stack);
+    }
+    break;
+   case 2:
+    printf("\nEnter value of node: ");
+    scanf("%d", &data);
+    push(stack, data);
+    break;
+   case 3:
+    if(isEmpty(stack)) {
+     printf("\nAborted operation. Stack is currently empty.\n");
+    } else { 
+     printf("\nSuccessfully deleted node with the value of: %d\n", pop(stack));
+    }
+    break;
+   case 4:
+    if(isEmpty(stack)) {
+     printf("\nAborted operation. Stack is currently empty.\n");
+    } else {
+     printf("\nValue on top of Stack: %d\n", peek(stack));
+    }
+    break;
+   case 5:
+    printf("\nByers!");
+    break;
+  } 
+ }while(selection != 5);
+ 
+ 
+ return 0;
+}
+
+Stack* createStack() {
+    Stack* stack = (Stack*) malloc(sizeof(Stack));
+ stack->size = 0;
+ return stack;
+}
+
+void push(Stack* stack, int data) {
+    stack->size++;
+ stack->arr = (int*) realloc(stack->arr, ((stack->size)+1)*sizeof(int));
+ for(int i=stack->size; i>0; i--) {
+     stack->arr[i] = stack->arr[i-1];
+ }
+ stack->arr[0] = data;
+}
+
+int pop(Stack* stack) {
+ int value = stack->arr[0];
+ for(int i=0; i<(stack->size)-1; i++) {
+     stack->arr[i] = stack->arr[i+1];
+ }
+ stack->size--;
+ return value;
+}
+
+int peek(Stack* stack) {
+ return stack->arr[0];
+}
+
+int isEmpty(Stack* stack) {
+ return stack->size == 0;
+}
+
+void printStack(Stack* stack) {
+ printf("\n\nValues in Stack: [ ");
+ 
+ for(int i=0; i<stack->size; i++) {
+     printf("%d ", stack->arr[i]);
+ }
+ printf("]\n");
+}
