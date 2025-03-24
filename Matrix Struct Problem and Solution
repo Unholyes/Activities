@@ -1,0 +1,110 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct {
+ char name;
+ int row;
+ int col;
+ int** values; 
+} Matrix;
+
+int main(void) {
+ 
+ Matrix* brader = (Matrix*) malloc(sizeof(Matrix));
+ int i, row, col, choice, size = 0;
+ int firstMatrix, secondMatrix;
+ 
+ do{
+  printf("Matrix Calculator Menu:\n");
+  printf("[1] Define a matrix\n");
+  printf("[2] Calculate Matrix\n");
+  printf("[3] Delete Matrix\n");
+  printf("[4] Exit Program\n");
+  
+  printf("\nEnter your choice: ");
+  scanf("%d", &choice);
+  
+  switch(choice) {
+   case 1:
+    printf("\nEnter name for the matrix: ");
+    scanf(" %c", &brader[size].name);
+    printf("Enter number of rows: ");
+    scanf("%d", &brader[size].row);
+    printf("Enter number of columns: ");
+    scanf("%d", &brader[size].col);
+    
+    brader[size].values = (int**) malloc(brader[size].row*sizeof(int));
+    for(i=0; i<brader[size].row; i++) {
+     brader[size].values[i] = (int*) malloc(brader[size].col*sizeof(int));
+    }
+    
+    printf("\nEnter elements of matrix %c:\n", brader[size].name);
+    for(row=0; row<brader[size].row; row++){
+     for(col=0; col<brader[size].col; col++){
+      printf("Enter element %c[%d][%d]: ", brader[size].name, row, col);
+      scanf("%d", &brader[size].values[row][col]);
+     }
+    }
+    
+    printf("\nMatrix %c defined successfully.\n\n", brader[size].name);
+    
+    size++;
+    brader = realloc(brader, (size+1)*sizeof(Matrix));
+    break;
+   case 2:
+    printf("\nList of matrices:");
+    char operation;
+    
+    for(i=0; i<size; i++){
+     printf("\n%d. %c",i+1, brader[i].name);  
+    }
+    
+    printf("\n\nSelect first matrix: ");
+    scanf("%d", &firstMatrix);
+    printf("Select operation(+/-): ");
+    scanf(" %c", &operation);
+    printf("Select second matrix: ");
+    scanf("%d", &secondMatrix);
+    
+    printf("\nResult of %c %c %c\n", brader[firstMatrix-1].name, operation, brader[secondMatrix-1].name);
+    for(row=0; row<brader[firstMatrix-1].row; row++){
+     for(col=0; col<brader[firstMatrix-1].col; col++){
+      printf("%d ", brader[firstMatrix-1].values[row][col] + brader[secondMatrix-1].values[row][col]);
+     }
+     printf("\n");
+    }
+    printf("\n");
+    break;
+   case 3:
+    printf("\nList of matrices:");
+    
+    for(i=0; i<size; i++){
+     printf("\n%d. %c",i+1, brader[i].name);  
+    }
+    printf("\n\nSelect matrix to delete: ");
+    scanf("%d", &firstMatrix);
+    
+    printf("\nMatrix %c deleted successfully.\n\n", brader[firstMatrix-1].name);
+    for(i=firstMatrix-1; i<size-1; i++)
+     brader[i] = brader[i+1];
+    
+    brader = realloc(brader, size*sizeof(Matrix));
+    size--;
+    
+    printf("List of matrices:");
+    
+    for(i=0; i<size; i++){
+     printf("\n%d. %c",i+1, brader[i].name);  
+    }
+    printf("\n\n");
+    break;
+   case 4:
+    break;
+   default:
+    break; 
+  }
+ } while(choice!=4);
+ 
+ return 0;
+}
+ 
